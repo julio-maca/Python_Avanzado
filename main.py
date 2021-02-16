@@ -14,8 +14,6 @@ clients = [
 
     }
 
-
-
 ]
 def create_client(client):
     global clients
@@ -28,23 +26,62 @@ def create_client(client):
 
 def list_clients():
     for idx, client in enumerate(clients):
-        print('{}: {}'.format(idx, client['name']))
+        print('{uid}| {name} |{company}| {email}| {position}'.format(
+            uid=idx,
+            name=client['name'],
+            company=client['company'],
+            email=client['email'],
+            position=client['position'] ))
 
-def update_client(client_name, updated_client_name):
-    global clients
-    if client_name in clients:  
-        index = clients.indes(client_name)
-        clients[index]= updated_name
+def update_client(client_id):
+    global clients  
+    client_id = int(client_id)
+
+    if client_id > len(clients):
+        return
+    
+    client_to_update = clients[client_id]
+    print(f'{client_id}: {client_to_update["name"]}')
+
+    choise = input('Is the cliend do you want to Update? [y/n]')
+    
+    if choise == 'y':
+        choise = input(f"client name: { client_to_update['name'] } \n Update name? [y/n]")
+        if choise == 'y':
+            client_to_update['name'] = _get_client_field('name')
+
+        choise = input(f"client company: { client_to_update['company'] } \n Update company? [y/n]")
+        if choise == 'y':
+            client_to_update['company'] = _get_client_field('company')
+
+        choise = input(f"client email: { client_to_update['email'] } \n Update email [y/n]")
+        if choise == 'y':
+            client_to_update['email'] = _get_client_field('email')
+
+        choise = input(f"client position: { client_to_update['position'] } \n Update position [y/n]")
+        if choise == 'y':
+
+            client_to_update['position'] = _get_client_field('position')
     else:
-        print('Client is not in clients list')
+        print('Client is not updated')
 
 
-def delete_client(client_name):
+def delete_client(client_id):
     global clients
-    if client_name in clients:
-        clients.remove(client_name)
+    client_id = int(client_id)
+
+    if client_id > len(clients):
+        return
+
+    print(f'{client_id}: {clients[client_id]["name"]}')
+    
+    choise = input('Is the cliend do you want to delete? [y/n]')
+    
+    if choise == 'y':
+        client_deleted = clients.pop(client_id)
+        print(client_deleted)
     else:
-        print('Client is not in clients list')
+        print('Client isnt in client list ')
 def search_client(client_name):
     for client in clients:
         if client != client_name:
@@ -102,14 +139,14 @@ if __name__=='__main__':
     elif command=='L':
         list_clients()
     elif command == 'D':
-        client_name = _get_client_name()
-        delete_client(client_name)
+        list_clients()
+        id_client = input('What is the client ID do you want to Delete? ')
+        delete_client(id_client)
         list_clients() 
     elif command =='U':
-        client_name = _get_client_name()    
-        updated_client_name= input('What is the update client name ')
-        update_client(client_name, updated_client_name)
         list_clients()
+        id_client = input('What is the client ID do you want to Update? ')
+        update_client(id_client)
     elif command == 'S':
         client_name = _get_client_name()
         found = search_client(client_name)
