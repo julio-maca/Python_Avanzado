@@ -1,22 +1,40 @@
 import sys
-clients='Pablo,Ricardo,'
-def create_client(client_name):
+clients = [
+    {
+        'name': 'pablo',
+        'company': 'Google',
+        'email': 'pablo@email.com',
+        'position': 'Software engineer',
+    },
+    {
+        'name': 'ricardo',
+        'company': 'Facebook',
+        'email': 'ricardo@email.com',
+        'position': 'Data engineer',
+
+    }
+
+
+
+]
+def create_client(client):
     global clients
-    if client_name not in clients:  
-        clients+=client_name
-        _add_comma()
+    if client not in clients:  
+        clients.append(client)
+        
     else:
         print('Client already is in the client\'s list')
 
 
 def list_clients():
-    global clients
-    print(clients)
+    for idx, client in enumerate(clients):
+        print('{}: {}'.format(idx, client['name']))
 
 def update_client(client_name, updated_client_name):
     global clients
-    if client_name in clients:
-        clients = clients.replace(client_name +',', updated_client_name + ',' )
+    if client_name in clients:  
+        index = clients.indes(client_name)
+        clients[index]= updated_name
     else:
         print('Client is not in clients list')
 
@@ -24,22 +42,22 @@ def update_client(client_name, updated_client_name):
 def delete_client(client_name):
     global clients
     if client_name in clients:
-        clients = clients.replace(client_name + ',', ' ')
+        clients.remove(client_name)
     else:
         print('Client is not in clients list')
 def search_client(client_name):
-    clients_list = clients.split(',')
-
-    for client in clients_list:
+    for client in clients:
         if client != client_name:
             continue
         else:
             return True 
 
-def _add_comma():
-    global clients
-    clients+=',' 
-
+def _get_client_field(field_name):
+    field =None 
+    while not field:
+        field = input('what is the client {}?'.format(field_name))
+    
+    return field 
 
 def _get_client_name():
     client_name= None
@@ -73,8 +91,13 @@ if __name__=='__main__':
 
 
     if command== 'C':
-        client_name= _get_client_name()
-        create_client(client_name)
+        client={
+            'name': _get_client_field('name'),
+            'company': _get_client_field('company'),
+            'email': _get_client_field('email'),
+            'position': _get_client_field('position'),
+        }
+        create_client(client)
         list_clients()
     elif command=='L':
         list_clients()
